@@ -53,6 +53,11 @@
   for (var i = 0; i < parts.length - 1; i++) {
     if (parts[i] === "e" || parts[i] === "entry") { code = decodeURIComponent(parts[i + 1]); break; }
   }
+  if (!code) {
+    // 也接受 ?code=<编号>：这条路径返回 200，适合不想看到 404 页头的场合。
+    var m = location.search.match(/[?&]code=([^&]+)/);
+    if (m) { code = decodeURIComponent(m[1]); }
+  }
   var valid = /^[A-Za-z0-9-]{3,64}$/.test(code);
   if (valid) {
     document.getElementById("code").textContent = code.toUpperCase();
