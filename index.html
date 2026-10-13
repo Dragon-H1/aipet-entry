@@ -47,10 +47,12 @@
   </p>
 </main>
 <script>
-  // 路径形如 /e/<编号> 或 /entry/<编号>
+  // 路径形如 .../e/<编号> 或 .../entry/<编号>（可能挂在子路径下，例如 /aipet-entry/e/TAG-001）
   var parts = location.pathname.split("/").filter(Boolean);
-  var code = (parts.length === 2 && (parts[0] === "e" || parts[0] === "entry"))
-    ? decodeURIComponent(parts[1]) : "";
+  var code = "";
+  for (var i = 0; i < parts.length - 1; i++) {
+    if (parts[i] === "e" || parts[i] === "entry") { code = decodeURIComponent(parts[i + 1]); break; }
+  }
   var valid = /^[A-Za-z0-9-]{3,64}$/.test(code);
   if (valid) {
     document.getElementById("code").textContent = code.toUpperCase();
