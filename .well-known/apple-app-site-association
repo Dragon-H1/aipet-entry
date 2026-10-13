@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["<TEAM_ID>.<BUNDLE_ID>"],
+        "components": [
+          { "/": "/e/*", "comment": "实体／包装入口（NFC 标签写的就是这一条）" },
+          { "/": "/entry/*", "comment": "备用写法" }
+        ]
+      }
+    ]
+  }
+}

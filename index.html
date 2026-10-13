@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>打开 AI 宠物</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #F4F1EC; color: #292521;
+    font: 16px/1.6 -apple-system, "SF Pro Text", "PingFang SC", system-ui, sans-serif;
+    padding: 24px;
+  }
+  main { width: 100%; max-width: 420px; text-align: center; }
+  .pet {
+    width: 96px; height: 96px; margin: 0 auto 20px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #FBD8CE, #F3B9AA);
+    box-shadow: 0 10px 30px rgba(41,37,33,.10);
+  }
+  h1 { font-size: 21px; font-weight: 600; margin: 0 0 6px; }
+  p { margin: 0 0 22px; color: #665D54; font-size: 14px; }
+  .code {
+    display: inline-block; font: 600 15px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: .08em; color: #385465; background: #DEE6EC;
+    padding: 7px 11px; border-radius: 8px; margin-bottom: 22px;
+  }
+  a.open {
+    display: block; text-decoration: none; color: #fff; background: #5A7183;
+    padding: 15px 18px; border-radius: 12px; font-weight: 600; font-size: 16px;
+    box-shadow: 0 6px 18px rgba(90,113,131,.28);
+  }
+  a.open:active { transform: translateY(1px); }
+  .hint { margin-top: 18px; font-size: 12.5px; color: #8A8078; }
+  .hint a { color: #5A7183; }
+</style>
+</head>
+<body>
+<main>
+  <div class="pet" aria-hidden="true"></div>
+  <h1>这是你的 AI 宠物</h1>
+  <p>实体编号 <span class="code" id="code">—</span><br>打开 App 后会用这个编号继续你那只宠物。</p>
+  <a class="open" id="open" href="#">打开 AI 宠物</a>
+  <p class="hint" id="hint">
+    还没装？先安装 App，再用同一个入口进来，编号不会变。
+  </p>
+</main>
+<script>
+  // 路径形如 /e/<编号> 或 /entry/<编号>
+  var parts = location.pathname.split("/").filter(Boolean);
+  var code = (parts.length === 2 && (parts[0] === "e" || parts[0] === "entry"))
+    ? decodeURIComponent(parts[1]) : "";
+  var valid = /^[A-Za-z0-9-]{3,64}$/.test(code);
+  if (valid) {
+    document.getElementById("code").textContent = code.toUpperCase();
+    document.getElementById("open").href = "aipet://entry/" + encodeURIComponent(code.toUpperCase());
+  } else {
+    document.getElementById("code").textContent = "未识别";
+    document.getElementById("hint").textContent =
+      "这个链接里没有可用的实体编号。请用包装或标签上的原始链接。";
+    document.getElementById("open").style.display = "none";
+  }
+</script>
+</body>
+</html>
